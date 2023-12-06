@@ -12,57 +12,43 @@ data = pd.read_csv('training_data.csv')
 data.loc[data['increase_stock']=='high_bike_demand', 'increase_stock'] = 1
 data.loc[data['increase_stock']=='low_bike_demand', 'increase_stock'] = 0
 
-feature = 'precip'
-min= np.min(data.loc[data['increase_stock']==1,feature])
-medain= np.median(data.loc[data['increase_stock']==1,feature])
-print(f"{min: .10f}", f"{medain: .20f}")
-print(0==medain)
-stamps = np.linspace(min, medain,10)#int(max-min))
-means = []
-stamps_str = []
-for i in range(len(stamps)-1):
-    a= data.loc[(stamps[i] <= data[feature]) &  (data[feature] <= stamps[i+1]), [feature]]
-    print(stamps[i+1], ": ",f"{len(a)}" )
-    a = data.loc[(stamps[i] <= data[feature]) &  (data[feature] <= stamps[i+1]), ['increase_stock']]
-    means.append(np.sum(a['increase_stock']))
-    stamps_str.append('(' + str(int(stamps[i])) + ',' + str(int(stamps[i+1])) + ')')
-    #stamps = range(int(np.ceil(min)), int(np.ceil(min)+len(means)))
-plt.figure()
-plt.plot(stamps[1:], means, 'o')
-plt.savefig(feature + 'VS' + feature +'_mean')
+# idxmax = data['precip'].idxmax()
+# data.drop(idxmax, inplace=True)
+
+# df = data.loc[(data['precip'] > 0) | (data['snowdepth']>0), ['precip', 'increase_stock']]
+# print(len(df.index))
+# print(len(df.loc[df['increase_stock']==1].index))
+#df = data.loc[data['snowdepth'] > 0, ['precip', 'increase_stock']]
+#print(len(df.index))
+#print(len(df.loc[df['increase_stock']==1].index))
+#data['precip_exp'] = 2**data['precip']
+#data['precip_ln'] = np.log(data['precip']+10e-10)
+
+#print(len((data.loc[data['precip']==0, 'precip']).index))
+# feature = 'precip'
+# min= np.min(data.loc[data['increase_stock']==1,feature])
+# max= np.max(data.loc[data['increase_stock']==1,feature])
+# print(f"{min: .10f}", f"{max: .20f}")
+# stamps = np.linspace(min, max,100)#int(max-min))
+# means = []
+# stamps_str = []
+# for i in range(len(stamps)-1):
+#     a= data.loc[(stamps[i] <= data[feature]) &  (data[feature] <= stamps[i+1]), [feature]]
+#     #print(stamps[i+1], ": ",f"{len(a)}" )
+#     a = data.loc[(stamps[i] <= data[feature]) &  (data[feature] <= stamps[i+1]), ['increase_stock']]
+#     means.append(np.sum(a['increase_stock']))
+#     stamps_str.append('(' + str(int(stamps[i])) + ',' + str(int(stamps[i+1])) + ')')
+#     #stamps = range(int(np.ceil(min)), int(np.ceil(min)+len(means)))
+# plt.figure()
+# plt.plot(stamps[1:], means, 'o')
+# plt.savefig(feature + 'VS' + feature +'_mean')
 
 
 
-#data = data[[x for x in data.keys() if (x not in execlude and x != 'increase_stock')]]
-#corr = data[[x for x in data.keys() if (x != 'increase_stock')]].corr()
-#new_features = {}
-#print(corr['hour_of_day']['hour_of_day'])
-#for x in corr:
-#     new_features[x]=[]
-#     for y in corr[x].keys():
-#         if np.abs(corr[x][y]) < 1 and np.abs(corr[x][y]) >=0.5:
-#             new_features[x].append(y)
-
-# new_features = {key:value for (key,value) in new_features.items() if value != []}
-# print(new_features)
 
 
-data['tempTimesdew'] = data['temp'] * data['dew']
-#print(data['tempTimesdew'][0:5])
-execlude = ['summertime', 'snow', 'weekday']
-features = [x for x in data.keys() if x not in execlude]
-#print(data[features])
 
-f = plt.figure(figsize=(19, 15))
-plt.matshow(data[features].corr(), fignum=f.number)
-# plt.xticks(range(data.select_dtypes(['number']).shape[1]), data.select_dtypes(['number']).columns, fontsize=14, rotation=45)
-# plt.yticks(range(data.select_dtypes(['number']).shape[1]), data.select_dtypes(['number']).columns, fontsize=14)
-plt.xticks(range(len(features)), features, fontsize=14, rotation=45)
-plt.yticks(range(len(features)), features, fontsize=14)
-cb = plt.colorbar()
-cb.ax.tick_params(labelsize=14)
-plt.title('Correlation Matrix', fontsize=16)
-#plt.savefig('correlation_matrix_1.png')
+
 
 
 # hours = []
@@ -95,17 +81,7 @@ plt.title('Correlation Matrix', fontsize=16)
 # #plt.show()
 
 
-# #Holidays and week days
-# ylist = [np.mean(data.loc[data['weekday']== 0, ['increase_stock']]['increase_stock']),
-# np.mean(data.loc[data['weekday']== 1, ['increase_stock']]['increase_stock']),
-# np.mean(data.loc[data['holiday']== 0, ['increase_stock']]['increase_stock']),
-# np.mean(data.loc[data['holiday']== 1, ['increase_stock']]['increase_stock'])]
-# xlist=['NOT weekday', 'weekday', 'NOT holiday', 'holiday']
 
-# plt.figure()
-# plt.bar(xlist, ylist)
-# plt.savefig('holiday_weekend.png')
-# #plt.show()
 
 # #Days
 # days = []
@@ -139,24 +115,51 @@ plt.title('Correlation Matrix', fontsize=16)
 # plt.savefig('tmpVStmp_mean')
 #  """
 # #temperature
-# float_features = [ 'temp', 'dew', 'humidity', 'precip',
-#  'windspeed', 'cloudcover', 'visibility']
-# for feature in float_features:
-#     min= np.min(data[feature])
-#     max= np.max(data[feature])
-#     stamps = np.linspace(min, max, int(max-min))
-#     means = []
-#     stamps_str = []
-#     for i in range(len(stamps)-1):
-#         a = data.loc[(stamps[i] <= data[feature]) &  (data[feature] <= stamps[i+1]), ['increase_stock']]
-#         means.append(np.mean(a['increase_stock']))
-#         #stamps_str.append('(' + str(int(stamps[i])) + ',' + str(int(stamps[i+1])) + ')')
-#     stamps = range(int(np.ceil(min)), int(np.ceil(min)+len(means)))
+fig, axs = plt.subplots(2, 3, figsize=(14, 8))
+float_features = [ 'temp', 'month', 'hour_of_day']
+j=0
+for feature in float_features:
+    min= np.min(data[feature])
+    max= np.max(data[feature])
+    stamps = np.linspace(min, max, int(max-min))
+    means = []
+    stamps_str = []
+    for i in range(len(stamps)-1):
+        a = data.loc[(stamps[i] <= data[feature]) &  (data[feature] <= stamps[i+1]), ['increase_stock']]
+        means.append(np.mean(a['increase_stock']))
+        #stamps_str.append('(' + str(int(stamps[i])) + ',' + str(int(stamps[i+1])) + ')')
+    stamps = range(int(np.ceil(min)), int(np.ceil(min)+len(means)))
 
-#     plt.figure()
-#     plt.plot(stamps, means, 'o')
-#     plt.savefig(feature + 'VS' + feature +'_mean')
+    axs[0, j].plot(stamps, means, 'o')
+    axs[0, j].set_title('P_' + feature)
+    if j == 0:
+        axs[0, j].set_ylabel('P(increase_stock = high_bike_demand)')
+    axs[0, j].set_xlabel(feature)
+    j+=1
 
+#Holidays and week days
+ylist = [np.mean(data.loc[data['weekday']== 0, ['increase_stock']]['increase_stock']),
+np.mean(data.loc[data['weekday']== 1, ['increase_stock']]['increase_stock']),
+np.mean(data.loc[data['holiday']== 0, ['increase_stock']]['increase_stock']),
+np.mean(data.loc[data['holiday']== 1, ['increase_stock']]['increase_stock'])]
+xlist=['NOT weekday', 'weekday', 'NOT holiday', 'holiday']
+axs[1, 0].bar(xlist, ylist)
+axs[1, 0].set_title('P_weekday, holiday')
+axs[1, 0].set_ylabel('P(increase_stock = high_bike_demand)')
+axs[1, 0].set_xlabel("weekday, holiday")
+
+features= data.keys()
+matrix = np.delete(data[features].corr()['increase_stock'].to_numpy(), 15).reshape(1, -1)
+axs[1, 1].bar(features[:-1], matrix[0])
+axs[1, 1].tick_params(axis='x', rotation=90)
+axs[1, 1].set_ylabel('Covariance with increase_stock')
+axs[1, 1].set_xlabel('Input features')
+axs[1, 1].set_title('Correlation Plot')
+
+axs[1, 2].axis('off')
+
+plt.tight_layout()
+fig.savefig("test")
 
 # """ feature='snow'
 # steps=20

@@ -7,56 +7,69 @@ import sklearn.linear_model as skl_lm
 import sklearn.discriminant_analysis as skl_da
 import sklearn.neighbors as skl_nb
 from sklearn.model_selection import GridSearchCV
+from sklearn.preprocessing import StandardScaler
 
 
-#keys = ['hour_of_day', 'day_of_week', 'month', 'holiday', 'weekday', 
-# 'summertime', 'temp', 'dew', 'humidity', 'precip', 'snow', 'snowdepth',
-# 'windspeed', 'cloudcover', 'visibility', 'increase_stock']
-
-#DATA PREPROCESSING
+#FEATURE ENGINEERING
 data = pd.read_csv('training_data.csv')
 data['increase_stock'] = np.where(data['increase_stock'] == 'high_bike_demand', 1, 0)
 
-data.loc[data['month'].isin([12, 1, 2]), 'month'] = 0
-data.loc[data['month'].isin([11]) , 'month'] = 1
-data.loc[data['month'].isin([3, 5, 7, 8]) , 'month'] = 2
-data.loc[data['month'].isin([4, 6, 9, 10]) , 'month'] = 3
+data['c_month']=np.empty(len(data.index))
+data.loc[data['month'].isin([12, 1, 2]), 'c_month'] = 0
+data.loc[data['month'].isin([11]) , 'c_month'] = 1
+data.loc[data['month'].isin([3, 5, 7, 8]) , 'c_month'] = 2
+data.loc[data['month'].isin([4, 6, 9, 10]) , 'c_month'] = 3
 
-data.loc[data['day_of_week'].isin([0,1,2,3,4]), 'day_of_week'] = 0
-data.loc[data['day_of_week'].isin([6]), 'day_of_week'] = 1
-data.loc[data['day_of_week'].isin([5]), 'day_of_week'] = 2
+data['c_day_of_week']=np.empty(len(data.index))
+data.loc[data['day_of_week'].isin([0,1,2,3,4]), 'c_day_of_week'] = 0
+data.loc[data['day_of_week'].isin([6]), 'c_day_of_week'] = 1
+data.loc[data['day_of_week'].isin([5]), 'c_day_of_week'] = 2
 
-data.loc[data['hour_of_day'].isin([0, 1, 2, 3, 4, 5, 6, 21, 23]), 'hour_of_day'] = 0
-data.loc[data['hour_of_day'].isin([7, 20, 22]), 'hour_of_day'] = 1
-data.loc[data['hour_of_day'].isin([8, 9, 10, 11, 12, 13, 14]) , 'hour_of_day'] = 2
-data.loc[data['hour_of_day'].isin([15, 16, 19]) , 'hour_of_day'] = 3
-data.loc[data['hour_of_day'].isin([17, 18]) , 'hour_of_day'] = 4
+data['c_hour_of_day']=np.empty(len(data.index))
+data.loc[data['hour_of_day'].isin([0, 1, 2, 3, 4, 5, 6, 7, 21, 22, 23]), 'c_hour_of_day'] = 0
+data.loc[data['hour_of_day'].isin([8, 9, 10, 11, 12, 13, 14, 20]) , 'c_hour_of_day'] = 1
+data.loc[data['hour_of_day'].isin([15, 16, 17, 18, 19]) , 'c_hour_of_day'] = 2 
 
-data.loc[data['visibility'] < 15, 'visibility'] = True
-data.loc[data['visibility'] >= 15, 'visibility'] = False
+""" data['bool_visibility'] = np.empty(len(data.index))
+data.loc[data['visibility'] < 15, 'bool_visibility'] = True
+data.loc[data['visibility'] >= 15, 'bool_visibility'] = False
 
-data.loc[data['snowdepth'] >= 0.01 , 'snowdepth'] = True
-data.loc[~(data['snowdepth'] >= 0.01) , 'snowdepth'] = False
+data['bool_snowdepth'] = np.empty(len(data.index))
+data.loc[data['snowdepth'] >= 0 , 'bool_snowdepth'] = True
+data.loc[~(data['snowdepth'] >= 0) , 'bool_snowdepth'] = False
+
+data['bool_windspeed'] = np.empty(len(data.index))
+data.loc[data['windspeed'] < 30, 'bool_windspeed'] = False
+data.loc[data['windspeed'] >= 30, 'bool_windspeed'] = True
 
 
-data.loc[data['windspeed'] < 30, 'windspeed'] = False
-data.loc[data['windspeed'] >= 30, 'windspeed'] = True
+data['bool_precip'] = np.empty(len(data.index))
+data.loc[data['precip'] <=0.1, 'bool_precip'] = False
+data.loc[data['precip'] > 0.1, 'bool_precip'] = True """
 
-data.loc[data['precip'] <=0, 'precip'] = False
-data.loc[data['precip'] > 0, 'precip'] = True
+data['temp_square'] = data['temp'] ** 2
+data['dew_square'] = data['dew'] ** 2
+data['humidity_square'] = (data['humidity']**2)
+data['temp_dew_humidity'] = data['temp'] * data['dew'] * 1/data['humidity_square']
 
-data['tempSquare'] = data['temp'] ** 2
-data['dewSquare'] = data['dew'] ** 2
-data['humiditySquare'] = 1/(data['humidity']**2)
-data['badWeather'] = np.empty(len(data.index))
-data.loc[(data['snowdepth'] | data['precip'] | data['visibility'] | data['windspeed']), 'badWeather'] = True
-data.loc[~(data['snowdepth']  | data['precip'] | data['visibility'] | data['windspeed']) , 'badWeather'] = False
+data['bad_weather'] = np.empty(len(data.index))
+data.loc[( (data['snowdepth'] > 0) | (data['precip'] > 0.1) | (data['visibility'] < 15) | (data['windspeed'] > 30)), 'bad_weather'] = True
+data.loc[~( (data['snowdepth'] > 0) | (data['precip'] > 0.1) | (data['visibility'] < 15) | (data['windspeed'] > 30)), 'bad_weather'] = False
+
+# Create a StandardScaler
+scaler = StandardScaler()
+
+# Fit and transform the DataFrame
+features = [x for x in data.keys() if x != 'increase_stock']
+y_labels = data['increase_stock'].to_numpy()
+data = pd.DataFrame(scaler.fit_transform(data[features]), columns=features)
+data['increase_stock'] = y_labels
 
 #Data Split
 np.random.seed(1)
 split = 0.8
 keys = data.keys()
-execlude = ['increase_stock','snow']
+execlude = ['increase_stock','snow', 'hour_of_day', 'day_of_week', 'month']
 features = [x for x in keys if x not in execlude]
 train_index = np.random.choice(data.index, size=int(len(data.index) * split), replace=False)
 train = data.loc[data.index.isin(train_index)] 
@@ -65,34 +78,15 @@ train_X, test_X = train[features], test[features]
 train_y, test_y =  np.ravel((train[['increase_stock']]).to_numpy()), np.ravel(test[['increase_stock']].to_numpy()) 
 
 #Model building
-def print_dataframe(filtered_cv_results):
-    for mean_precision, std_precision, mean_recall, std_recall, mean_accuracy, std_accuracy, mean_f1, std_f1, params in zip(
-        filtered_cv_results["mean_test_precision"],
-        filtered_cv_results["std_test_precision"],
-        filtered_cv_results["mean_test_recall"],
-        filtered_cv_results["std_test_recall"],
-        filtered_cv_results["mean_test_accuracy"],
-        filtered_cv_results["std_test_accuracy"],
-        filtered_cv_results["mean_test_f1"],
-        filtered_cv_results["std_test_f1"],
-        filtered_cv_results["params"],
-    ):
-        print(
-            f"precision: {mean_precision:0.3f} (±{std_precision:0.03f}),"
-            f" recall: {mean_recall:0.3f} (±{std_recall:0.03f}),"
-            f" accuracy: {mean_accuracy:0.3f} (±{std_accuracy:0.03f}),"
-            f" f1: {mean_f1:0.3f} (±{std_f1:0.03f}),"
-            f" for {params}"
-        )
-    print()
-
 def refit_strategy(cv_results):
+    f1_threshold = 0.68
+    std_f1_threshold = 0.02
     cv_results_ = pd.DataFrame(cv_results)
-    print("All grid-search results:")
-    print_dataframe(cv_results_)
-    highest_recall_index = cv_results_['mean_test_recall'].idxmax()
-    print("The model with the highest recall:")
-    row = cv_results_.loc[highest_recall_index ,  [ "mean_score_time",
+    highest_f1_results = cv_results_.loc[(cv_results_['mean_test_f1'] >= f1_threshold) & \
+                                         (cv_results_['std_test_f1'] <= std_f1_threshold)]
+    best_model_index = highest_f1_results['mean_test_recall'].idxmax()
+    print("The model with the highest f1 score:")
+    row = cv_results_.loc[best_model_index ,  [ "mean_score_time",
             "mean_test_recall",
             "std_test_recall",
             "mean_test_precision",
@@ -107,16 +101,12 @@ def refit_strategy(cv_results):
             "rank_test_f1",
             "params",
         ]]
-    print(
-        f"{row}"
-    )
-    return highest_recall_index
+    print(row)
+    return best_model_index
 
 
 logistic_model = skl_lm.LogisticRegression(solver='lbfgs', max_iter=10000)
-class_weight = [{0:1, 1:1}, {0:1, 1:2}, {0:1, 1:3}, {0:1, 1:4}, {0:1, 1:5}, {0:1, 1:6}, {0:1, 1:7}, {0:1, 1:8}
-                , {0:1, 1:9}, {0:1, 1:10}, {0:1, 1:12}, {0:1, 1:13}, {0:1, 1:14}, {0:1, 1:15}, {0:1, 1:16}, {0:1, 1:17}, {0:1, 1:18}
-                , {0:1, 1:19}, {0:1, 1:20}]
+class_weight = [{0:1, 1:x} for x in range(1,11)]
 C = np.linspace(0, 1, 20)[1:]
 parameters = {'class_weight': class_weight, "C": C}
 scores = ["precision", "recall", "accuracy", "f1"]

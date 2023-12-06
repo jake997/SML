@@ -2,13 +2,14 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-f1_threshold = 0.65
+# Metrics thresholds
+f1_threshold = 0.68
 std_f1_threshold = 0.02
 
 recall_threshold = 0.85
 std_recall_threshold = 0.03
 
-precision_threshold = 0.90
+precision_threshold = 0.85
 std_precision_threshold = 0.03
 
 cv_results = pd.read_csv("cv_results_logistic_model.csv")
@@ -37,12 +38,9 @@ keys = [ "mean_score_time",
         
     ]
 
-# str =  "All grid-search results:\n" 
-# str =  str + cv_results.to_string(columns=keys, float_format=float_to_str, index=True) 
-# str = str + "\n"
 str =""
 
-#Find highest f1 index
+#Find max index
 f1_index =cv_results.loc[(cv_results['mean_test_f1'] >= f1_threshold) &\
                           (cv_results['std_test_f1'] <= std_f1_threshold)].index
 
