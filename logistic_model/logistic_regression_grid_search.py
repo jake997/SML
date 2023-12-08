@@ -8,6 +8,7 @@ import sklearn.discriminant_analysis as skl_da
 import sklearn.neighbors as skl_nb
 from sklearn.model_selection import GridSearchCV
 from sklearn.preprocessing import StandardScaler
+import sklearn.metrics as skl_mt
 
 
 #FEATURE ENGINEERING
@@ -78,13 +79,38 @@ train_X, test_X = train[features], test[features]
 train_y, test_y =  np.ravel((train[['increase_stock']]).to_numpy()), np.ravel(test[['increase_stock']].to_numpy()) 
 
 #Model building
+# def refit_strategy(cv_results):
+#     f1_threshold = 0.68
+#     std_f1_threshold = 0.02
+#     cv_results_ = pd.DataFrame(cv_results)
+#     highest_f1_results = cv_results_.loc[(cv_results_['mean_test_f1'] >= f1_threshold) & \
+#                                          (cv_results_['std_test_f1'] <= std_f1_threshold)]
+#     best_model_index = highest_f1_results['mean_test_recall'].idxmax()
+#     print("The model with the highest f1 score:")
+#     row = cv_results_.loc[best_model_index ,  [ "mean_score_time",
+#             "mean_test_recall",
+#             "std_test_recall",
+#             "mean_test_precision",
+#             "std_test_precision",
+#             "mean_test_accuracy",
+#             "std_test_accuracy",
+#             "mean_test_f1",
+#             "std_test_f1",
+#             "rank_test_recall",
+#             "rank_test_precision",
+#             "rank_test_accuracy",
+#             "rank_test_f1",
+#             "params",
+#         ]]
+#     print(row)
+#     return best_model_index
+
 def refit_strategy(cv_results):
-    f1_threshold = 0.68
+    #f1_threshold = 0.68
     std_f1_threshold = 0.02
     cv_results_ = pd.DataFrame(cv_results)
-    highest_f1_results = cv_results_.loc[(cv_results_['mean_test_f1'] >= f1_threshold) & \
-                                         (cv_results_['std_test_f1'] <= std_f1_threshold)]
-    best_model_index = highest_f1_results['mean_test_recall'].idxmax()
+    highest_f1_results = cv_results_.loc[(cv_results_['std_test_f1'] <= std_f1_threshold)]
+    best_model_index = highest_f1_results['mean_test_f1'].idxmax()
     print("The model with the highest f1 score:")
     row = cv_results_.loc[best_model_index ,  [ "mean_score_time",
             "mean_test_recall",
@@ -105,11 +131,15 @@ def refit_strategy(cv_results):
     return best_model_index
 
 
+
 logistic_model = skl_lm.LogisticRegression(solver='lbfgs', max_iter=10000)
 class_weight = [{0:1, 1:x} for x in range(1,11)]
 C = np.linspace(0, 1, 20)[1:]
 parameters = {'class_weight': class_weight, "C": C}
-scores = ["precision", "recall", "accuracy", "f1"]
+f_beta = skl_mt.make_scorer(skl_mt.fbeta_score, beta=2)
+scores = {"precision" : skl_mt.make_scorer(skl_mt.precision_score) ,\
+           "recall" : skl_mt.make_scorer(skl_mt.recall_score),\
+           "accuracy": skl_mt.make_scorer(skl_mt.accuracy_score), "f1": f_beta}
 clf = GridSearchCV(logistic_model, param_grid=parameters, scoring= scores, refit=refit_strategy)
 estimator = clf.fit(train_X, train_y)
 cv_results = pd.DataFrame(estimator.cv_results_)

@@ -52,7 +52,7 @@ data = pd.DataFrame(scaler.fit_transform(data[features]), columns=features)
 data['increase_stock'] = y_labels
 
 #DATA SPLITING
-np.random.seed(3)
+np.random.seed(18)
 split = 0.8
 keys = data.keys()
 execlude = ['increase_stock','snow', 'hour_of_day', 'day_of_week', 'month']
@@ -64,8 +64,8 @@ train_X, test_X = train[features], test[features]
 train_y, test_y =  np.ravel((train[['increase_stock']]).to_numpy()), np.ravel(test[['increase_stock']].to_numpy()) 
 
 #MODEL CONSTRUCTION
-class_weight = {0:1, 1:3}
-C= 0.05242
+class_weight = {0:1, 1:4}
+C= 0.894
 logistic_model = skl_lm.LogisticRegression(solver='lbfgs', max_iter=10000, class_weight=class_weight, C=C)
 logistic_model.fit(train_X, train_y)
 predict_prob = logistic_model.predict_proba(test_X)
@@ -97,14 +97,14 @@ def random_model(x):
 
 acc, recall, precision, f1=0, 0, 0, 0
 loops = 1000
-for i in range(loops):
-    random_pred = []
-    for x in range(len(test_y)):
-        random_pred.append(random_model(x))
-    acc += skl_met.accuracy_score(test_y, random_pred)
-    recall += skl_met.recall_score(test_y, random_pred, pos_label='high_bike_demand')
-    precision += skl_met.precision_score(test_y, random_pred, pos_label='high_bike_demand')
-    f1 += skl_met.f1_score(test_y, random_pred, pos_label='high_bike_demand')
+# for i in range(loops):
+#     random_pred = []
+#     for x in range(len(test_y)):
+#         random_pred.append(random_model(x))
+#     acc += skl_met.accuracy_score(test_y, random_pred)
+#     recall += skl_met.recall_score(test_y, random_pred, pos_label='high_bike_demand')
+#     precision += skl_met.precision_score(test_y, random_pred, pos_label='high_bike_demand')
+#     f1 += skl_met.f1_score(test_y, random_pred, pos_label='high_bike_demand')
 
 
 #scores
