@@ -1,83 +1,90 @@
 Best models by recall:
-   mean_score_time  mean_test_recall  std_test_recall  mean_test_precision  std_test_precision  mean_test_accuracy  std_test_accuracy  mean_test_f1  std_test_f1  rank_test_recall  rank_test_precision  rank_test_accuracy  rank_test_f1                                         params
-9            0.007             0.921            0.029                0.451               0.030               0.785              0.026         0.761        0.023                13                  190                 190           131  {'C': 0.05242, 'class_weight': {0: 1, 1: 10}}
+    mean_score_time  mean_test_recall  std_test_recall  mean_test_precision  std_test_precision  mean_test_accuracy  std_test_accuracy  mean_test_f_beta  std_test_f_beta  rank_test_recall  rank_test_precision  rank_test_accuracy  rank_test_f_beta                                            params
+89            0.003             0.921            0.029                0.459               0.035               0.791              0.029             0.702            0.028                 3                  157                 176               118  {'C': 0.47376, 'class_weight': {0: 0.1, 1: 0.9}}
 Best models by precision:
 Empty DataFrame
-Columns: [mean_score_time, mean_test_recall, std_test_recall, mean_test_precision, std_test_precision, mean_test_accuracy, std_test_accuracy, mean_test_f1, std_test_f1, rank_test_recall, rank_test_precision, rank_test_accuracy, rank_test_f1, params]
+Columns: [mean_score_time, mean_test_recall, std_test_recall, mean_test_precision, std_test_precision, mean_test_accuracy, std_test_accuracy, mean_test_f_beta, std_test_f_beta, rank_test_recall, rank_test_precision, rank_test_accuracy, rank_test_f_beta, params]
 Index: []
-Best models by f1:
-     mean_score_time  mean_test_recall  std_test_recall  mean_test_precision  std_test_precision  mean_test_accuracy  std_test_accuracy  mean_test_f1  std_test_f1  rank_test_recall  rank_test_precision  rank_test_accuracy  rank_test_f1                                        params
-3              0.005             0.859            0.035                0.537               0.030               0.842              0.015         0.766        0.017               115                   76                  76           113  {'C': 0.05242, 'class_weight': {0: 1, 1: 4}}
-13             0.005             0.850            0.037                0.540               0.027               0.844              0.013         0.761        0.019               131                   75                  75           130  {'C': 0.10584, 'class_weight': {0: 1, 1: 4}}
-23             0.006             0.846            0.036                0.544               0.035               0.845              0.017         0.760        0.016               132                   73                  73           134  {'C': 0.15725, 'class_weight': {0: 1, 1: 4}}
-31             0.004             0.727            0.021                0.638               0.032               0.878              0.009         0.707        0.017               168                   26                  24           168  {'C': 0.21067, 'class_weight': {0: 1, 1: 2}}
-43             0.006             0.850            0.031                0.547               0.034               0.847              0.017         0.764        0.014               116                   69                  69           124   {'C': 0.2631, 'class_weight': {0: 1, 1: 4}}
-53             0.005             0.850            0.031                0.545               0.032               0.846              0.016         0.763        0.014               116                   71                  71           127   {'C': 0.3155, 'class_weight': {0: 1, 1: 4}}
-63             0.005             0.850            0.031                0.545               0.032               0.846              0.016         0.763        0.014               116                   71                  71           127   {'C': 0.3689, 'class_weight': {0: 1, 1: 4}}
-73             0.005             0.850            0.031                0.546               0.031               0.847              0.015         0.764        0.013               116                   70                  69           125  {'C': 0.42135, 'class_weight': {0: 1, 1: 4}}
-83             0.006             0.850            0.031                0.548               0.033               0.848              0.016         0.765        0.014               116                   64                  64           118  {'C': 0.47376, 'class_weight': {0: 1, 1: 4}}
-93             0.006             0.850            0.031                0.548               0.033               0.848              0.016         0.765        0.014               116                   64                  64           118   {'C': 0.5262, 'class_weight': {0: 1, 1: 4}}
-103            0.011             0.850            0.031                0.548               0.033               0.848              0.016         0.765        0.014               116                   64                  64           118   {'C': 0.5787, 'class_weight': {0: 1, 1: 4}}
-113            0.011             0.850            0.031                0.548               0.033               0.848              0.016         0.765        0.014               116                   64                  64           118    {'C': 0.631, 'class_weight': {0: 1, 1: 4}}
-123            0.014             0.850            0.031                0.548               0.033               0.848              0.016         0.765        0.014               116                   64                  64           118   {'C': 0.6844, 'class_weight': {0: 1, 1: 4}}
-133            0.011             0.850            0.031                0.550               0.033               0.848              0.016         0.765        0.014               116                   61                  61           114   {'C': 0.7369, 'class_weight': {0: 1, 1: 4}}
-143            0.012             0.850            0.031                0.550               0.033               0.848              0.016         0.765        0.014               116                   61                  61           114   {'C': 0.7893, 'class_weight': {0: 1, 1: 4}}
-153            0.005             0.850            0.031                0.550               0.033               0.848              0.016         0.765        0.014               116                   61                  61           114   {'C': 0.8427, 'class_weight': {0: 1, 1: 4}}
-163            0.007             0.850            0.031                0.551               0.031               0.849              0.015         0.766        0.015               116                   58                  58           110    {'C': 0.894, 'class_weight': {0: 1, 1: 4}}
-173            0.004             0.850            0.031                0.551               0.031               0.849              0.015         0.766        0.015               116                   58                  58           110   {'C': 0.9475, 'class_weight': {0: 1, 1: 4}}
-183            0.005             0.850            0.031                0.551               0.031               0.849              0.015         0.766        0.015               116                   58                  58           110                  {'C': 1.0, t': {0: 1, 1: 4}}
+Best models by f_beta:
+     mean_score_time  mean_test_recall  std_test_recall  mean_test_precision  std_test_precision  mean_test_accuracy  std_test_accuracy  mean_test_f_beta  std_test_f_beta  rank_test_recall  rank_test_precision  rank_test_accuracy  rank_test_f_beta                                                                           params
+3              0.005             0.802            0.046                0.591               0.027               0.866              0.008             0.721            0.019               133                   41                  41                42                               {'C': 0.05242, 'class_weight': {0: 0.25, 1: 0.75}}
+13             0.003             0.811            0.034                0.588               0.024               0.865              0.008             0.725            0.013               132                   42                  42                30                               {'C': 0.10584, 'class_weight': {0: 0.25, 1: 0.75}}
+23             0.007             0.820            0.037                0.593               0.030               0.867              0.012             0.732            0.016               116                   40                  40                 2                               {'C': 0.15725, 'class_weight': {0: 0.25, 1: 0.75}}
+33             0.004             0.824            0.045                0.594               0.028               0.868              0.011             0.735            0.019               115                   39                  39                 1                               {'C': 0.21067, 'class_weight': {0: 0.25, 1: 0.75}}
+34             0.004             0.864            0.042                0.538               0.027               0.843              0.014             0.726            0.016                98                   73                  72                17                                 {'C': 0.21067, 'class_weight': {0: 0.2, 1: 0.8}}
+35             0.003             0.894            0.037                0.513               0.024               0.830              0.015             0.727            0.018                81                   83                  81                16  {'C': 0.21067, 'class_weight': {0: 0.16666666666666666, 1: 0.8333333333333334}}
+44             0.004             0.859            0.035                0.537               0.030               0.842              0.015             0.724            0.014                99                   74                  74                35                                  {'C': 0.2631, 'class_weight': {0: 0.2, 1: 0.8}}
+54             0.003             0.855            0.035                0.534               0.027               0.841              0.014             0.720            0.013               100                   76                  75                59                                  {'C': 0.3155, 'class_weight': {0: 0.2, 1: 0.8}}
+64             0.003             0.855            0.035                0.534               0.030               0.841              0.015             0.720            0.012               100                   75                  75                58                                  {'C': 0.3689, 'class_weight': {0: 0.2, 1: 0.8}}
+65             0.007             0.894            0.037                0.511               0.029               0.828              0.018             0.725            0.020                81                   90                  90                25   {'C': 0.3689, 'class_weight': {0: 0.16666666666666666, 1: 0.8333333333333334}}
+74             0.007             0.850            0.037                0.538               0.029               0.843              0.014             0.720            0.015               102                   72                  72                52                                 {'C': 0.42135, 'class_weight': {0: 0.2, 1: 0.8}}
+75             0.001             0.894            0.037                0.511               0.029               0.828              0.018             0.725            0.020                81                   90                  90                25  {'C': 0.42135, 'class_weight': {0: 0.16666666666666666, 1: 0.8333333333333334}}
+84             0.003             0.850            0.037                0.540               0.027               0.844              0.013             0.721            0.015               102                   70                  70                43                                 {'C': 0.47376, 'class_weight': {0: 0.2, 1: 0.8}}
+94             0.003             0.850            0.037                0.540               0.027               0.844              0.013             0.721            0.015               102                   70                  70                43                                  {'C': 0.5262, 'class_weight': {0: 0.2, 1: 0.8}}
+102            0.002             0.727            0.021                0.641               0.037               0.879              0.011             0.698            0.019               141                   28                  24               131    {'C': 0.5787, 'class_weight': {0: 0.3333333333333333, 1: 0.6666666666666667}}
+104            0.000             0.846            0.036                0.544               0.033               0.845              0.016             0.721            0.015               108                   62                  59                48                                  {'C': 0.5787, 'class_weight': {0: 0.2, 1: 0.8}}
+112            0.002             0.727            0.021                0.638               0.032               0.878              0.009             0.697            0.017               141                   36                  32               135     {'C': 0.631, 'class_weight': {0: 0.3333333333333333, 1: 0.6666666666666667}}
+114            0.003             0.846            0.036                0.542               0.034               0.845              0.016             0.720            0.016               108                   66                  64                56                                   {'C': 0.631, 'class_weight': {0: 0.2, 1: 0.8}}
+122            0.002             0.731            0.028                0.638               0.032               0.878              0.009             0.699            0.018               139                   37                  32               125    {'C': 0.6844, 'class_weight': {0: 0.3333333333333333, 1: 0.6666666666666667}}
+124            0.000             0.846            0.036                0.542               0.034               0.845              0.016             0.720            0.016               108                   66                  64                56                                  {'C': 0.6844, 'class_weight': {0: 0.2, 1: 0.8}}
+132            0.005             0.731            0.028                0.638               0.032               0.878              0.009             0.699            0.018               139                   37                  32               125    {'C': 0.7369, 'class_weight': {0: 0.3333333333333333, 1: 0.6666666666666667}}
+134            0.004             0.846            0.036                0.544               0.035               0.845              0.017             0.721            0.014               105                   59                  59                46                                  {'C': 0.7369, 'class_weight': {0: 0.2, 1: 0.8}}
+144            0.003             0.846            0.036                0.544               0.035               0.845              0.017             0.721            0.014               105                   59                  59                46                                  {'C': 0.7893, 'class_weight': {0: 0.2, 1: 0.8}}
+154            0.006             0.842            0.039                0.543               0.036               0.845              0.017             0.718            0.018               112                   63                  64                64                                  {'C': 0.8427, 'class_weight': {0: 0.2, 1: 0.8}}
+164            0.003             0.842            0.039                0.543               0.036               0.845              0.017             0.718            0.018               112                   63                  64                64                                   {'C': 0.894, 'class_weight': {0: 0.2, 1: 0.8}}
+174            0.007             0.842            0.039                0.543               0.036               0.845              0.018             0.718            0.019               112                   65                  64                63                                  {'C': 0.9475, 'class_weight': {0: 0.2, 1: 0.8}}
 
 
 The model with highest recall
 
-mean_score_time                                                0.006
-mean_test_recall                                               0.921
-std_test_recall                                                0.040
-mean_test_precision                                            0.458
-std_test_precision                                             0.029
-mean_test_accuracy                                             0.791
-std_test_accuracy                                              0.025
-mean_test_f1                                                   0.764
-std_test_f1                                                    0.023
-rank_test_recall                                                   1
-rank_test_precision                                              188
-rank_test_accuracy                                               188
-rank_test_f1                                                     123
-params                 {'C': 0.15725, 'class_weight': {0: 1, 1: 10}}
-index      29
+mean_score_time                                                   0.004
+mean_test_recall                                                  0.925
+std_test_recall                                                   0.035
+mean_test_precision                                               0.428
+std_test_precision                                                0.024
+mean_test_accuracy                                                0.766
+std_test_accuracy                                                 0.023
+mean_test_f_beta                                                  0.681
+std_test_f_beta                                                   0.022
+rank_test_recall                                                      1
+rank_test_precision                                                 171
+rank_test_accuracy                                                  190
+rank_test_f_beta                                                    149
+params                 {'C': 0.05242, 'class_weight': {0: 0.1, 1: 0.9}}
+index      9
 
 The model with highest precision
 
-mean_score_time                                               0.005
-mean_test_recall                                              0.542
-std_test_recall                                               0.032
-mean_test_precision                                           0.784
-std_test_precision                                            0.032
-mean_test_accuracy                                            0.892
-std_test_accuracy                                             0.006
-mean_test_f1                                                  0.577
-std_test_f1                                                   0.030
-rank_test_recall                                                190
-rank_test_precision                                               1
-rank_test_accuracy                                                9
-rank_test_f1                                                    190
-params                 {'C': 0.05242, 'class_weight': {0: 1, 1: 1}}
-index      0
+mean_score_time                                                   0.000
+mean_test_recall                                                  0.493
+std_test_recall                                                   0.031
+mean_test_precision                                               0.795
+std_test_precision                                                0.037
+mean_test_accuracy                                                0.887
+std_test_accuracy                                                 0.007
+mean_test_f_beta                                                  0.558
+std_test_f_beta                                                   0.030
+rank_test_recall                                                    171
+rank_test_precision                                                   1
+rank_test_accuracy                                                   18
+rank_test_f_beta                                                    171
+params                 {'C': 0.05242, 'class_weight': {0: 0.5, 1: 0.5}}
+index      1
 
-The model with highest f1 score
+The model with highest f_beta score
 
-mean_score_time                                              0.005
-mean_test_recall                                             0.908
-std_test_recall                                              0.044
-mean_test_precision                                          0.503
-std_test_precision                                           0.031
-mean_test_accuracy                                           0.823
-std_test_accuracy                                            0.020
-mean_test_f1                                                 0.781
-std_test_f1                                                  0.029
-rank_test_recall                                                77
-rank_test_precision                                            109
-rank_test_accuracy                                             107
-rank_test_f1                                                     1
-params                 {'C': 0.3155, 'class_weight': {0: 1, 1: 6}}
-index      55
+mean_score_time                                                    0.004
+mean_test_recall                                                   0.824
+std_test_recall                                                    0.045
+mean_test_precision                                                0.594
+std_test_precision                                                 0.028
+mean_test_accuracy                                                 0.868
+std_test_accuracy                                                  0.011
+mean_test_f_beta                                                   0.735
+std_test_f_beta                                                    0.019
+rank_test_recall                                                     115
+rank_test_precision                                                   39
+rank_test_accuracy                                                    39
+rank_test_f_beta                                                       1
+params                 {'C': 0.21067, 'class_weight': {0: 0.25, 1: 0....
+index      33

@@ -106,41 +106,25 @@ train_y, test_y =  np.ravel((train[['increase_stock']]).to_numpy()), np.ravel(te
 #     return best_model_index
 
 def refit_strategy(cv_results):
-    #f1_threshold = 0.68
-    std_f1_threshold = 0.02
+    std_f_beta_threshold = 0.02
     cv_results_ = pd.DataFrame(cv_results)
-    highest_f1_results = cv_results_.loc[(cv_results_['std_test_f1'] <= std_f1_threshold)]
-    best_model_index = highest_f1_results['mean_test_f1'].idxmax()
-    print("The model with the highest f1 score:")
-    row = cv_results_.loc[best_model_index ,  [ "mean_score_time",
-            "mean_test_recall",
-            "std_test_recall",
-            "mean_test_precision",
-            "std_test_precision",
-            "mean_test_accuracy",
-            "std_test_accuracy",
-            "mean_test_f1",
-            "std_test_f1",
-            "rank_test_recall",
-            "rank_test_precision",
-            "rank_test_accuracy",
-            "rank_test_f1",
-            "params",
-        ]]
-    print(row)
+    highest_f_beta_results = cv_results_.loc[(cv_results_['std_test_f_beta'] <= std_f_beta_threshold)]
+    best_model_index = highest_f_beta_results['mean_test_f_beta'].idxmax()
     return best_model_index
 
 
 
 logistic_model = skl_lm.LogisticRegression(solver='lbfgs', max_iter=10000)
-class_weight = [{0:1, 1:x} for x in range(1,11)]
+class_weight = [{0:1/x, 1:1-1/x} for x in range(1,11)]
 C = np.linspace(0, 1, 20)[1:]
 parameters = {'class_weight': class_weight, "C": C}
-f_beta = skl_mt.make_scorer(skl_mt.fbeta_score, beta=2)
+f_beta = skl_mt.make_scorer(skl_mt.fbeta_score, beta=1.5)
 scores = {"precision" : skl_mt.make_scorer(skl_mt.precision_score) ,\
            "recall" : skl_mt.make_scorer(skl_mt.recall_score),\
-           "accuracy": skl_mt.make_scorer(skl_mt.accuracy_score), "f1": f_beta}
+           "accuracy": skl_mt.make_scorer(skl_mt.accuracy_score), "f_beta": f_beta}
 clf = GridSearchCV(logistic_model, param_grid=parameters, scoring= scores, refit=refit_strategy)
 estimator = clf.fit(train_X, train_y)
 cv_results = pd.DataFrame(estimator.cv_results_)
 cv_results.to_csv("cv_results_logistic_model.csv")
+print("Best params: ", clf.best_params_)
+#print("Best model:", clf.cv_results_[clf.best_index_])

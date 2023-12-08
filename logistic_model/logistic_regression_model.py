@@ -52,7 +52,7 @@ data = pd.DataFrame(scaler.fit_transform(data[features]), columns=features)
 data['increase_stock'] = y_labels
 
 #DATA SPLITING
-np.random.seed(18)
+np.random.seed(3)
 split = 0.8
 keys = data.keys()
 execlude = ['increase_stock','snow', 'hour_of_day', 'day_of_week', 'month']
@@ -64,8 +64,8 @@ train_X, test_X = train[features], test[features]
 train_y, test_y =  np.ravel((train[['increase_stock']]).to_numpy()), np.ravel(test[['increase_stock']].to_numpy()) 
 
 #MODEL CONSTRUCTION
-class_weight = {0:1, 1:4}
-C= 0.894
+class_weight = {0:0.25, 1:0.75}
+C= 0.210 #0.0526
 logistic_model = skl_lm.LogisticRegression(solver='lbfgs', max_iter=10000, class_weight=class_weight, C=C)
 logistic_model.fit(train_X, train_y)
 predict_prob = logistic_model.predict_proba(test_X)

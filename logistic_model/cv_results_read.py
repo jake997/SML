@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Metrics thresholds
-f1_threshold = 0.68
-std_f1_threshold = 0.02
+f_beta_threshold = 0.68
+std_f_beta_threshold = 0.02
 
 recall_threshold = 0.85
 std_recall_threshold = 0.03
@@ -28,12 +28,12 @@ keys = [ "mean_score_time",
         "std_test_precision",
         "mean_test_accuracy",
         "std_test_accuracy",
-        "mean_test_f1",
-        "std_test_f1",
+        "mean_test_f_beta",
+        "std_test_f_beta",
         "rank_test_recall",
         "rank_test_precision",
         "rank_test_accuracy",
-        "rank_test_f1",
+        "rank_test_f_beta",
         "params",
         
     ]
@@ -41,8 +41,8 @@ keys = [ "mean_score_time",
 str =""
 
 #Find max index
-f1_index =cv_results.loc[(cv_results['mean_test_f1'] >= f1_threshold) &\
-                          (cv_results['std_test_f1'] <= std_f1_threshold)].index
+f_beta_index =cv_results.loc[(cv_results['mean_test_f_beta'] >= f_beta_threshold) &\
+                          (cv_results['std_test_f_beta'] <= std_f_beta_threshold)].index
 
 recall_index =cv_results.loc[(cv_results['mean_test_recall'] >= recall_threshold) &\
                           (cv_results['std_test_recall'] <= std_recall_threshold)].index
@@ -53,19 +53,19 @@ precision_index =cv_results.loc[(cv_results['mean_test_precision'] >= precision_
 
 str = str + "Best models by recall:\n" + cv_results.loc[recall_index, keys].to_string(float_format=float_to_str) + "\n"
 str = str + "Best models by precision:\n" + cv_results.loc[precision_index, keys].to_string(float_format=float_to_str) + "\n"
-str = str + "Best models by f1:\n" + cv_results.loc[f1_index, keys].to_string(float_format=float_to_str) + "\n"
+str = str + "Best models by f_beta:\n" + cv_results.loc[f_beta_index, keys].to_string(float_format=float_to_str) + "\n"
 
 highest_recall_index = cv_results['mean_test_recall'].idxmax()
-highest_f1_index = cv_results['mean_test_f1'].idxmax()
+highest_f_beta_index = cv_results['mean_test_f_beta'].idxmax()
 highest_precision_index = cv_results['mean_test_precision'].idxmax()
 
 
 row = cv_results.loc[highest_recall_index ,   keys]
 row1= cv_results.loc[highest_precision_index , keys ]
-row2= cv_results.loc[highest_f1_index ,  keys]
+row2= cv_results.loc[highest_f_beta_index ,  keys]
 str = str +  "\n\nThe model with highest recall\n\n" + row.to_string(float_format= float_to_str) + f"\nindex      {highest_recall_index}" +\
      "\n\nThe model with highest precision\n\n" + row1.to_string(float_format= float_to_str) + f"\nindex      {highest_precision_index}" +\
-          "\n\nThe model with highest f1 score\n\n" + row2.to_string(float_format= float_to_str) + f"\nindex      {highest_f1_index}"
+          "\n\nThe model with highest f_beta score\n\n" + row2.to_string(float_format= float_to_str) + f"\nindex      {highest_f_beta_index}"
 with open('best_logistic_models.txt', 'w') as file:
     file.write(str)
 
