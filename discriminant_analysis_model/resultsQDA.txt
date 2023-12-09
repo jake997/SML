@@ -1,0 +1,16 @@
+QDA CV for parameter tuning results: 
+
+Mean precision: 0.5861487400709865 
+Mean recall: 0.8390096618357489 
+Mean accuracy: 0.8572916666666667 
+Mean F-beta: 0.7375088880486527
+Best params: {'reg_param': 0.5}
+QDA Validation results: 
+
+Validation accuracy: 0.8375
+Confusion matrix: 
+ [[228  42]
+ [ 10  40]]
+f_beta: 0.6683804627249358
+Recall: 0.8
+Precision: 0.4878048780487805
