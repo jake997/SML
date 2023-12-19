@@ -1,0 +1,15 @@
+Mean precision: 0.6637286126076062 
+Mean recall: 0.6231884057971013 
+Mean accuracy: 0.8705729166666667 
+Mean F-beta: 0.6316512221283048 
+
+Best params: {'solver': 'svd'}
+LDA Validation results: 
+
+Validation accuracy: 0.89375
+Confusion matrix: 
+ [[252  18]
+ [ 16  34]]
+f_beta: 0.6717325227963525
+Recall: 0.68
+Precision: 0.6538461538461539
